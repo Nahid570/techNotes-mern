@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post("/", loginLimiter, login);
 router.get("/refresh", refresh);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 module.exports = router;

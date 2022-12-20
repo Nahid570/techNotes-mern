@@ -14,8 +14,8 @@ exports.getAllNotes = aysncHandler(async (req, res) => {
   // Add username to each note before sending response
   const notesWithUser = await Promise.all(
     notes?.map(async (note) => {
-      const user = await User.findById(note.user).exec();
-      return { ...note, username: user.username };
+      const user = await User.findById(note?.user).exec();
+      return { ...note, username: user?.username };
     })
   );
   res.json(notesWithUser);

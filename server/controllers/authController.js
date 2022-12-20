@@ -32,7 +32,7 @@ exports.login = asyncHandler(async (req, res) => {
   const refreshToken = jwt.sign(
     { username: foundUser.username },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" }
+    { expiresIn: "7d" }
   );
 
   // Create secure cookie with refresh token
@@ -89,7 +89,6 @@ exports.refresh = (req, res) => {
 // @access Public - just to clear cookie if exists
 exports.logout = asyncHandler(async (req, res) => {
   const cookies = req?.cookies;
-  console.log(cookies);
 
   if (!cookies?.jwt) return res.sendStatus(204); // No Content
 

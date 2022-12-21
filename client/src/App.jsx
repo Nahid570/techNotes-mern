@@ -12,6 +12,8 @@ import NewNote from "./features/notes/NewNote";
 import EditNote from "./features/notes/EditNote";
 import Prefetch from "./features/auth/Prefetch";
 import PersistLogin from "./features/auth/PersistLogin";
+import RequireAuth from "./features/auth/RequireAuth";
+import { ROLES } from "./config/roles";
 
 const App = () => {
   return (
@@ -21,18 +23,30 @@ const App = () => {
         <Route path="login" element={<Login />} />
         {/* Prefetch  */}
         <Route element={<PersistLogin />}>
-          <Route element={<Prefetch />}>
-            <Route path="dash" element={<DashLayout />}>
-              <Route index element={<Welcome />} />
-              <Route path="users">
-                <Route index element={<UsersList />} />
-                <Route path="new" element={<NewUserForm />} />
-                <Route path=":id" element={<EditUser />} />
-              </Route>
-              <Route path="notes">
-                <Route index element={<NotesList />} />
-                <Route path="new" element={<NewNote />} />
-                <Route path=":id" element={<EditNote />} />
+          <Route
+            element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}
+          >
+            <Route element={<Prefetch />}>
+              <Route path="dash" element={<DashLayout />}>
+                <Route index element={<Welcome />} />
+
+                <Route
+                  element={
+                    <RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />
+                  }
+                >
+                  <Route path="users">
+                    <Route index element={<UsersList />} />
+                    <Route path="new" element={<NewUserForm />} />
+                    <Route path=":id" element={<EditUser />} />
+                  </Route>
+                </Route>
+
+                <Route path="notes">
+                  <Route index element={<NotesList />} />
+                  <Route path="new" element={<NewNote />} />
+                  <Route path=":id" element={<EditNote />} />
+                </Route>
               </Route>
             </Route>
           </Route>
